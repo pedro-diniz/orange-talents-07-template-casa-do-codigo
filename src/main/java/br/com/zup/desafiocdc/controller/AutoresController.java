@@ -3,8 +3,10 @@ package br.com.zup.desafiocdc.controller;
 import br.com.zup.desafiocdc.controller.requestdto.AutorRequestDto;
 import br.com.zup.desafiocdc.modelo.Autor;
 import br.com.zup.desafiocdc.repository.AutorRepository;
+import br.com.zup.desafiocdc.validation.EmailDuplicadoAutorValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -18,6 +20,14 @@ public class AutoresController {
     @Autowired
     private AutorRepository autorRepository;
 
+    @Autowired
+    private EmailDuplicadoAutorValidator emailDuplicadoAutorValidator;
+
+    @InitBinder
+    public void init(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(emailDuplicadoAutorValidator);
+    }
+
     @GetMapping // apesar de não ter sido solicitado, foi criado para testar a exibição de registros
     public List<Autor> listar() {
         return autorRepository.findAll();
@@ -25,11 +35,12 @@ public class AutoresController {
 
     @PostMapping
     @Transactional
-    @ResponseStatus(HttpStatus.OK)
-    public void cadastrar(@RequestBody @Valid AutorRequestDto autorRequestDto) {
+    public ResponseEntity<?> cadastrar(@RequestBody @Valid AutorRequestDto autorRequestDto) {
 
-        Autor autor = autorRequestDto.toEntity();
+        Autor autor = autorRequestDto.toModel();
         autorRepository.save(autor);
+
+        return ResponseEntity.ok().build();
 
     }
 

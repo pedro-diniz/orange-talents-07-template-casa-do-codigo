@@ -35,7 +35,7 @@ public class AutorRequestDto {
         return descricao;
     }
 
-    public Autor toEntity() {
+    public Autor toModel() {
         return new Autor(email, nome, descricao);
     }
 }

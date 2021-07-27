@@ -2,13 +2,9 @@ package br.com.zup.desafiocdc.modelo;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Entity
@@ -28,15 +24,12 @@ public class Autor {
     private Long id;
 
     @Email
-    @NotNull
     @NotBlank
     private String email;
 
-    @NotNull
     @NotBlank
     private String nome;
 
-    @NotNull
     @NotBlank
     @Length(max = 400)
     private String descricao;
