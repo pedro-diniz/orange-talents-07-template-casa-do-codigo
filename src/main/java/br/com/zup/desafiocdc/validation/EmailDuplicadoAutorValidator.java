@@ -1,7 +1,6 @@
 package br.com.zup.desafiocdc.validation;
 
 import br.com.zup.desafiocdc.controller.requestdto.AutorRequestDto;
-import br.com.zup.desafiocdc.exception.ApiValidationException;
 import br.com.zup.desafiocdc.modelo.Autor;
 import br.com.zup.desafiocdc.repository.AutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +35,10 @@ public class EmailDuplicadoAutorValidator implements Validator {
         // busca o e-mail a ser validado
         Optional<Autor> emailDuplicado = autorRepository.findByEmail(autorRequestDto.getEmail());
 
-        // retorna o erro se o e-mail já estiver em uso
+        // retorna o erro à mensagem da exceção se o e-mail já estiver em uso
         if(emailDuplicado.isPresent()) {
             errors.rejectValue("email", null, "O e-mail " +
                     autorRequestDto.getEmail() + " já está em uso. Insira outro e-mail.");
-            throw new ApiValidationException("E-mail em uso");
         }
 
     }
