@@ -8,6 +8,11 @@ public class Categoria {
 
     public Categoria() {}
 
+    // construtor para uso do Livro
+    public Categoria(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

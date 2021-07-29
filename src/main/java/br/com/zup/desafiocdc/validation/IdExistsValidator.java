@@ -9,22 +9,22 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
-// UniqueValue é a Annotation com quem vamos trabalhar
-// Object é o tipo do parâmetro que esperamos receber
-public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Object> {
+// possui o mesmo princípio de funcionamento do UniqueValue
+// a saída, entretanto, é contrária. Queremos que exista um valor (Id) em uso.
+public class IdExistsValidator implements ConstraintValidator<IdExists, Object> {
 
     private String domainAttribute;
     private Class<?> klass;
 
     // não conseguimos utilizar Repository aqui, pois a injeção seria dinâmica
-        // acabaríamos precisando passar o Repository por parâmetro também, e
-        // queremos simplificar o código
+    // acabaríamos precisando passar o Repository por parâmetro também, e
+    // queremos simplificar o código
     @PersistenceContext
     private EntityManager entityManager;
 
 
     @Override // instancia o objeto de validação
-    public void initialize(UniqueValue toValidate) {
+    public void initialize(IdExists toValidate) {
         domainAttribute = toValidate.fieldName();
         klass = toValidate.domainClass();
     }
@@ -33,8 +33,8 @@ public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Ob
     public boolean isValid(Object value, ConstraintValidatorContext validatorContext) {
 
         // query para buscar o domainAttribute na entidade klass.
-        Query query = entityManager.createQuery("select 1 from " + klass.getName() +
-                " where " + domainAttribute + " = :value ");
+        Query query = entityManager.createQuery("select x from " + klass.getName() +
+                " x where " + domainAttribute + " = :value ");
 
         // configuração do parâmetro da query
         query.setParameter("value", value);
@@ -47,7 +47,7 @@ public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Ob
                 domainAttribute + " = :value");
 
         // retorno do booleano se a lista está vazia ou não, validando a requisição
-        return list.isEmpty();
+        return !list.isEmpty();
     }
 
 }

@@ -12,6 +12,11 @@ public class Autor {
 
     public Autor() {}
 
+    // construtor para uso do Livro
+    public Autor(Long id) {
+        this.id = id;
+    }
+
     public Autor(String email, String nome, String descricao) {
         this.email = email;
         this.nome = nome;
