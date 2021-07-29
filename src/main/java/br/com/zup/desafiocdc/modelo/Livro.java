@@ -17,6 +17,7 @@ Um novo livro precisa ser criado e status 200 retornado
 Caso alguma restrição não seja atendida, retorne 400 e um json informando os problemas de validação
  */
 
+import br.com.zup.desafiocdc.controller.responsedto.LivroDetalheResponseDto;
 import br.com.zup.desafiocdc.controller.responsedto.LivroResponseDto;
 import org.hibernate.validator.constraints.Length;
 
@@ -26,6 +27,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Livro {
@@ -69,7 +71,8 @@ public class Livro {
     @ManyToOne
     private Categoria categoria;
 
-    public Livro(String titulo, String resumo, String sumario, BigDecimal preco, int numeroPaginas, String isbn, LocalDate dataLancamento, Autor autor, Categoria categoria) {
+    public Livro(String titulo, String resumo, String sumario, BigDecimal preco, int numeroPaginas, String isbn,
+                 LocalDate dataLancamento, Autor autor, Categoria categoria) {
         this.titulo = titulo;
         this.resumo = resumo;
         this.sumario = sumario;
@@ -124,4 +127,19 @@ public class Livro {
     public LivroResponseDto toOutput() {
         return new LivroResponseDto(id, titulo);
     }
+
+    public LivroDetalheResponseDto toDetail() {
+        return new LivroDetalheResponseDto(
+                titulo,
+                resumo,
+                sumario,
+                preco,
+                autor.toOutput(),
+                categoria.toOutput(),
+                dataLancamento,
+                numeroPaginas,
+                isbn
+        );
+    }
+
 }

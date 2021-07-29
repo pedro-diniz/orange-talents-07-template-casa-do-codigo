@@ -1,5 +1,7 @@
 package br.com.zup.desafiocdc.modelo;
 
+import br.com.zup.desafiocdc.controller.responsedto.CategoriaResponseDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -31,6 +33,10 @@ public class Categoria {
 
     public Categoria(String nome) {
         this.nome = nome;
+    }
+
+    public CategoriaResponseDto toOutput() {
+        return new CategoriaResponseDto(nome);
     }
 
 }

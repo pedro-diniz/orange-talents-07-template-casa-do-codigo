@@ -1,5 +1,6 @@
 package br.com.zup.desafiocdc.modelo;
 
+import br.com.zup.desafiocdc.controller.responsedto.AutorResponseDto;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -60,5 +61,9 @@ public class Autor {
 
     public Instant getDataRegistro() {
         return dataRegistro;
+    }
+
+    public AutorResponseDto toOutput() {
+        return new AutorResponseDto(nome, descricao);
     }
 }

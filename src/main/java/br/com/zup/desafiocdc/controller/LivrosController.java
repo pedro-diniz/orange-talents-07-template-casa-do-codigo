@@ -1,6 +1,7 @@
 package br.com.zup.desafiocdc.controller;
 
 import br.com.zup.desafiocdc.controller.requestdto.LivroRequestDto;
+import br.com.zup.desafiocdc.controller.responsedto.LivroDetalheResponseDto;
 import br.com.zup.desafiocdc.controller.responsedto.LivroResponseDto;
 import br.com.zup.desafiocdc.modelo.Livro;
 import br.com.zup.desafiocdc.repository.AutorRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/livros")
@@ -36,6 +38,15 @@ public class LivrosController {
         }
 
         return livrosResponse;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LivroDetalheResponseDto> detalhar(@PathVariable Long id) {
+        Optional<Livro> livro = livroRepository.findById(id);
+        if (livro.isPresent()) {
+            return ResponseEntity.ok(livro.get().toDetail());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
