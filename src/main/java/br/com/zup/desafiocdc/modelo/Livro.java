@@ -17,6 +17,7 @@ Um novo livro precisa ser criado e status 200 retornado
 Caso alguma restrição não seja atendida, retorne 400 e um json informando os problemas de validação
  */
 
+import br.com.zup.desafiocdc.controller.responsedto.LivroResponseDto;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -118,5 +119,9 @@ public class Livro {
 
     public Categoria getCategoria() {
         return categoria;
+    }
+
+    public LivroResponseDto toOutput() {
+        return new LivroResponseDto(id, titulo);
     }
 }

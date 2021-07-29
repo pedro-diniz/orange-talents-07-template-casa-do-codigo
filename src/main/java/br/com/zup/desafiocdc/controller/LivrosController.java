@@ -1,6 +1,7 @@
 package br.com.zup.desafiocdc.controller;
 
 import br.com.zup.desafiocdc.controller.requestdto.LivroRequestDto;
+import br.com.zup.desafiocdc.controller.responsedto.LivroResponseDto;
 import br.com.zup.desafiocdc.modelo.Livro;
 import br.com.zup.desafiocdc.repository.AutorRepository;
 import br.com.zup.desafiocdc.repository.CategoriaRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,14 @@ public class LivrosController {
     private LivroRepository livroRepository;
 
     @GetMapping
-    public List<Livro> listar() {
-        return livroRepository.findAll();
+    public List<LivroResponseDto> listar() {
+        List<Livro> livros = livroRepository.findAll();
+        List<LivroResponseDto> livrosResponse = new ArrayList<>();
+        for (Livro livro: livros) {
+            livrosResponse.add(livro.toOutput());
+        }
+
+        return livrosResponse;
     }
 
     @PostMapping
